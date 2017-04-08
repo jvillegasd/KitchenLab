@@ -30,8 +30,7 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
-    int sw = 0;
-    int x1, y1, s, so = 0;
+    int sw = 0, x1, y1, s, so = 0, preciototal = 0;
     boolean clickmenu = false;
 
     public Menu() {
@@ -419,8 +418,20 @@ public class Menu extends javax.swing.JFrame {
         }
     }
 
+    private void generargasto() {
+        for (int i = 0; i < platos.size(); i++) {
+            for (int j = 0; j < consultarFichero(); j++) {
+                if (((Plato) platos.geto(i)).nombre.equals(TablaMenu.getValueAt(j, 0))) {
+                    preciototal = preciototal + ((int) TablaMenu.getValueAt(j, 2));
+                    break;
+                }
+            }
+        }
+    }
+
     private void bt3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt3MouseClicked
         if (bt3.isEnabled()) {
+            generargasto();
             int z = 0, sw = 0;
             List aux2 = MeserosTabla.mesaus;
             List aux3 = MeserosTabla.mesa;
@@ -446,7 +457,7 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bt3MouseClicked
 
-    int veri(String p) {
+    int verificarcero(String p) {
         try {
             return Integer.parseInt(tf1.getText());
         } catch (Exception e) {
@@ -466,7 +477,6 @@ public class Menu extends javax.swing.JFrame {
         } else {
             if (veriplato((String) TablaMenu.getValueAt(x1, 0))) {
                 tf1.setText(((Plato) platos.geto(indiplato((String) TablaMenu.getValueAt(x1, 0)))).cantidad + "");
-                bt2.setEnabled(true);
             } else {
                 tf1.setText(0 + "");
             }
@@ -503,22 +513,22 @@ public class Menu extends javax.swing.JFrame {
 
     private void bt5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt5MouseClicked
         if (bt5.isEnabled()) {
-            if (platos.isEmpty()) {
-                if (veri(tf1.getText()) > 0 && clickmenu) {
-                    Plato plato = new Plato((String) TablaMenu.getValueAt(x1, 0), veri(tf1.getText()), numpe);
+            if (platos.isEmpty()) {//primer plato
+                if (verificarcero(tf1.getText()) > 0 && clickmenu) {
+                    Plato plato = new Plato((String) TablaMenu.getValueAt(x1, 0), verificarcero(tf1.getText()), numpe);
                     platos.add(plato);
                     bt2.setEnabled(true);
                 }
-            } else if (((Plato) platos.geto(indiplato((String) TablaMenu.getValueAt(x1, 0)))).nombre.equals((String) TablaMenu.getValueAt(x1, 0))) {
+            } else if (((Plato) platos.geto(indiplato((String) TablaMenu.getValueAt(x1, 0)))).nombre.equals((String) TablaMenu.getValueAt(x1, 0))) {//demas platos
                 int i = indiplato((String) TablaMenu.getValueAt(x1, 0));
-                if (veri(tf1.getText()) == 0) {
+                if (verificarcero(tf1.getText()) == 0) {
                     platos.remove(i);
                 } else {
-                    ((Plato) platos.geto(i)).cantidad = veri(tf1.getText());
+                    ((Plato) platos.geto(i)).cantidad = verificarcero(tf1.getText());
                 }
             } else {
-                if (veri(tf1.getText()) > 0) {
-                    Plato plato = new Plato((String) TablaMenu.getValueAt(x1, 0), veri(tf1.getText()), numpe);
+                if (verificarcero(tf1.getText()) > 0 && clickmenu) {//demas platos
+                    Plato plato = new Plato((String) TablaMenu.getValueAt(x1, 0), verificarcero(tf1.getText()), numpe);
                     platos.add(plato);
                 }
             }
@@ -538,9 +548,9 @@ public class Menu extends javax.swing.JFrame {
         }
         if (key == evt.VK_BACK_SPACE && tf1.getText().isEmpty()) {
             bt5.setEnabled(false);
-        } else if (veri(tf1.getText()) == 0 && platos.isEmpty()) {
+        } else if (verificarcero(tf1.getText()) == 0 && platos.isEmpty()) {
             bt5.setEnabled(false);
-        } else if (clickmenu && !tf1.getText().isEmpty()) {
+        } else if (clickmenu && !tf1.getText().isEmpty() && verificarcero(tf1.getText()) != 0) {
             bt5.setEnabled(true);
         }
     }//GEN-LAST:event_tf1KeyTyped

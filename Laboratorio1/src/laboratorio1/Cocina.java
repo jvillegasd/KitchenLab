@@ -114,7 +114,7 @@ public class Cocina extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-int x2, y2;
+int x2, y2, m;
 
     void actualizar() {
         for (int i = 0; i < Menu.Pedidos.size(); i++) {
@@ -141,14 +141,13 @@ int x2, y2;
         y2 = TablaCocina.columnAtPoint(evt.getPoint());
         bt1.setEnabled(true);
         try {
-            int m = (int) TablaCocina.getValueAt(x2, 1);
+            m = ((int) TablaCocina.getValueAt(x2, 1)) - 1;
         } catch (Exception e) {
             bt1.setEnabled(false);
         }
     }//GEN-LAST:event_TablaCocinaMouseReleased
 
     private void bt1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt1MouseReleased
-        int m = ((int) TablaCocina.getValueAt(x2, 1)) - 1;
         ((Mesas) MeserosTabla.mesa.geto(m)).estado = "listo";
         bt1.setEnabled(false);
     }//GEN-LAST:event_bt1MouseReleased
