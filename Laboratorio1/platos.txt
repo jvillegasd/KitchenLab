@@ -1,0 +1,4 @@
+Pato, Pato, Salsa, Condimentos,10000
+Arroz, Arroz, Sal,15000
+AtunALaMilanesa, Atun, Condimentos, Milanesa, Agua Del Atun, Orin de las ratas, 50000
+Iguana, Iguana, Rata, Ardilla, 25000

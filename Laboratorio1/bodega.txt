@@ -1,0 +1,8 @@
+Papa, 1234
+Arroz, 1000
+Sal, 10000
+
+Papa, 1234
+Arroz, 1000
+Sal, 10000
+
