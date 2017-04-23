@@ -42,8 +42,11 @@ public class Chef extends javax.swing.JFrame {
         this.setResizable(false);
         AñadirPlatosFrame.setResizable(false);
         AñadirPlato.setEnabled(false);
-        AñadirPlatosFrame.setSize(400, 370);
+        AñadirPlatosFrame.setSize(400, 390);
+        RevisarBodegaFrame.setResizable(false);
+        RevisarBodegaFrame.setSize(450, 354);
         aib.setEnabled(false);
+        TablaBodega.setDefaultEditor(Object.class, null);
     }
 
     /**
@@ -66,9 +69,14 @@ public class Chef extends javax.swing.JFrame {
         AñadirPlato = new javax.swing.JButton();
         PrecioTF = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        RevisarBodegaFrame = new javax.swing.JFrame();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TablaBodega = new javax.swing.JTable();
+        RegresarBt = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         ChefTabla = new javax.swing.JTable();
         bt1 = new javax.swing.JButton();
+        bt2 = new javax.swing.JButton();
 
         AñadirPlatosFrame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         AñadirPlatosFrame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -92,12 +100,13 @@ public class Chef extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Ingredientes"
+                "Ingrediente", "Cantidad"
             }
         ));
         jScrollPane2.setViewportView(IngTabla);
         if (IngTabla.getColumnModel().getColumnCount() > 0) {
             IngTabla.getColumnModel().getColumn(0).setResizable(false);
+            IngTabla.getColumnModel().getColumn(1).setResizable(false);
         }
 
         tf1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -184,6 +193,61 @@ public class Chef extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
+        RevisarBodegaFrame.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        RevisarBodegaFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                RevisarBodegaFrameWindowClosed(evt);
+            }
+        });
+
+        TablaBodega.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Ingrediente", "Cantidad"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(TablaBodega);
+
+        RegresarBt.setText("Regresar");
+        RegresarBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegresarBtActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout RevisarBodegaFrameLayout = new javax.swing.GroupLayout(RevisarBodegaFrame.getContentPane());
+        RevisarBodegaFrame.getContentPane().setLayout(RevisarBodegaFrameLayout);
+        RevisarBodegaFrameLayout.setHorizontalGroup(
+            RevisarBodegaFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RevisarBodegaFrameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(RevisarBodegaFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RevisarBodegaFrameLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(RegresarBt, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        RevisarBodegaFrameLayout.setVerticalGroup(
+            RevisarBodegaFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RevisarBodegaFrameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(RegresarBt)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -216,15 +280,27 @@ public class Chef extends javax.swing.JFrame {
             }
         });
 
+        bt2.setText("Revisar Bodega");
+        bt2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(bt1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(bt1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bt2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -233,7 +309,9 @@ public class Chef extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bt1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt1)
+                    .addComponent(bt2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -253,6 +331,22 @@ public class Chef extends javax.swing.JFrame {
         tc.setResizable(false);
         TableColumn tc1 = tcm.getColumn(1);
         tc1.setHeaderValue("Ingredientes: ");
+        tc1.setResizable(false);
+        th.repaint();
+        aib.setEnabled(false);
+    }
+    
+    void generarTabla1(JTable tabla, int cant) {
+        DefaultTableModel model = new DefaultTableModel(cant, 2);
+        tabla.setModel(model);
+        mostrarFichero();
+        JTableHeader th = tabla.getTableHeader();
+        TableColumnModel tcm = th.getColumnModel();
+        TableColumn tc = tcm.getColumn(0);
+        tc.setHeaderValue("Ingrediente: ");
+        tc.setResizable(false);
+        TableColumn tc1 = tcm.getColumn(1);
+        tc1.setHeaderValue("Cantidad: ");
         tc1.setResizable(false);
         th.repaint();
         aib.setEnabled(false);
@@ -346,6 +440,26 @@ public class Chef extends javax.swing.JFrame {
             }
         }
     }
+    
+    public static void mostrarFichero1() {
+        FileReader fr = null;
+        try {
+            File fichero = new File("bodega.txt");
+            fr = new FileReader(fichero);
+            BufferedReader br = new BufferedReader(fr);
+            leerFichero1(br);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (fr != null) {
+                    fr.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
     static int cantplatos;
 
@@ -367,6 +481,32 @@ public class Chef extends javax.swing.JFrame {
                 } else if (sw == 1) {
                     ingr = linea.substring(i, linea.length());
                     ChefTabla.setValueAt(ingr, z, 1);
+                    sw = 2;
+                    z++;
+                }
+            }
+            linea = br.readLine();
+        }
+    }
+    
+    public static void leerFichero1(BufferedReader br) throws Exception {
+        String linea;
+        int sw = 0;
+        int z = 0;
+        linea = br.readLine();
+        String plato;
+        String ingr = "";
+        while (linea != null) {
+            sw = 0;
+            for (int i = 0; i < linea.length(); i++) {
+                System.out.println("ChatAt(i): " + linea.charAt(i));
+                if (linea.charAt(i) == ',' && sw == 0) {
+                    plato = linea.substring(0, i);
+                    TablaBodega.setValueAt(plato, z, 0);
+                    sw = 1;
+                } else if (sw == 1) {
+                    ingr = linea.substring(i, linea.length());
+                    TablaBodega.setValueAt(ingr, z, 1);
                     sw = 2;
                     z++;
                 }
@@ -401,6 +541,35 @@ public class Chef extends javax.swing.JFrame {
         }
         return c;
     }
+    
+    public static int consultarFichero1() {
+        FileReader fr = null;
+        int c = 0;
+        try {
+            File fichero = new File("bodega.txt");
+            fr = new FileReader(fichero);
+            BufferedReader br = new BufferedReader(fr);
+            String linea;
+            linea = br.readLine();
+            while (linea != null) {
+                c = c + 1;
+                linea = br.readLine();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (fr != null) {
+                    fr.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return c;
+    }
+    
+    
     private void bt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt1ActionPerformed
         // TODO add your handling code here:
         AñadirPlatosFrame.setLocationRelativeTo(this);
@@ -450,6 +619,7 @@ public class Chef extends javax.swing.JFrame {
             th.repaint();
             AñadirPlato.setEnabled(true);
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Campo vacio/Invalido");
             tf1.setText(null);
             AñadirPlato.setEnabled(false);
@@ -501,6 +671,29 @@ public class Chef extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_AñadirPlatoActionPerformed
 
+    static int cantingr;
+    private void bt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt2ActionPerformed
+        // TODO add your handling code here:
+        RevisarBodegaFrame.setLocationRelativeTo(this);
+        RevisarBodegaFrame.setVisible(true);
+        this.setVisible(false);
+        cantingr = consultarFichero1();
+        generarTabla1(TablaBodega, cantingr);
+        mostrarFichero1();
+    }//GEN-LAST:event_bt2ActionPerformed
+
+    private void RegresarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarBtActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(true);
+        RevisarBodegaFrame.setVisible(false);
+    }//GEN-LAST:event_RegresarBtActionPerformed
+
+    private void RevisarBodegaFrameWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_RevisarBodegaFrameWindowClosed
+        // TODO add your handling code here:
+        this.setVisible(true);
+        RevisarBodegaFrame.setVisible(false);
+    }//GEN-LAST:event_RevisarBodegaFrameWindowClosed
+
     int vericero(String f) {
         try {
             return Integer.parseInt(f);
@@ -551,13 +744,18 @@ public class Chef extends javax.swing.JFrame {
     public static javax.swing.JTable IngTabla;
     public static javax.swing.JTextField NombreTF;
     public static javax.swing.JTextField PrecioTF;
+    private javax.swing.JButton RegresarBt;
+    private javax.swing.JFrame RevisarBodegaFrame;
+    public static javax.swing.JTable TablaBodega;
     private javax.swing.JButton aib;
     private javax.swing.JButton bt1;
+    private javax.swing.JButton bt2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     public static javax.swing.JTextField tf1;
     // End of variables declaration//GEN-END:variables
 }

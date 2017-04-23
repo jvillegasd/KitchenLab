@@ -5,6 +5,11 @@
  */
 package laboratorio1;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -116,17 +121,144 @@ public class Cocina extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 int x2, y2, m;
 
+    boolean verificareclamopedido(int mesa) {
+        for (int i = 0; i < MeserosTabla.mesa.size(); i++) {
+            if (((Mesas) MeserosTabla.mesa.geto(i)).numero == mesa && ((Mesas) MeserosTabla.mesa.geto(i)).estado.equals("reclamado")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void actualizar() {
         for (int i = 0; i < Menu.Pedidos.size(); i++) {
-            for (int j = 0; j < 2; j++) {
-                if (j == 0) {
-                    TablaCocina.setValueAt(((Pedido) Menu.Pedidos.geto(i)).pedido, i, j);
-                } else {
-                    TablaCocina.setValueAt(((Pedido) Menu.Pedidos.geto(i)).mesa, i, j);
+            int numeromesa = ((Pedido) Menu.Pedidos.geto(i)).mesa;
+            if (verificareclamopedido(numeromesa)==false) {
+                for (int j = 0; j < 2; j++) {
+                    if (j == 0) {
+                        TablaCocina.setValueAt(((Pedido) Menu.Pedidos.geto(i)).pedido, i, j);
+                    } else {
+                        TablaCocina.setValueAt(((Pedido) Menu.Pedidos.geto(i)).mesa, i, j);
+                    }
                 }
             }
         }
         TablaCocina.updateUI();
+    }
+
+    void ActBodega() {
+        consultarFichero();
+    }
+
+    public static void consultarFichero() {
+        FileReader fr = null;
+        FileWriter fw = null;
+        int c = 0;
+        try {
+            File fichero = new File("bodega.txt");
+            fw = new FileWriter("bodega.txt", true);
+            PrintWriter pw = new PrintWriter(fw);
+            fr = new FileReader(fichero);
+            BufferedReader br = new BufferedReader(fr);
+            String linea;
+            linea = br.readLine();
+            String linea1;
+            pw.println();
+            int i = 0;
+            while (linea != null) {
+                linea = br.readLine();
+                while (i < linea.length()) {
+                    if (linea.charAt(i) == ',') {
+                        String plato = linea.substring(i);
+                        if (plato == pedido) {
+                            int cantidad1 = Integer.parseInt(linea.substring(i, linea.length()));
+                            cantidad1 = cantidad1 - cantidad;
+                            linea1 = plato + (", " + cantidad1);
+                            break;
+                        }else{
+                            linea1 = plato;
+                            escribirFichero(pw,linea1);
+                        }
+                    }
+                    i++;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (fr != null) {
+                    fr.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
+    public static int consultarFichero1() {
+        FileReader fr = null;
+        int c = 0;
+        try {
+            File fichero = new File("bodega.txt");
+            fr = new FileReader(fichero);
+            BufferedReader br = new BufferedReader(fr);
+            String linea;
+            linea = br.readLine();
+            while (linea != null) {
+                c = c + 1;
+                linea = br.readLine();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (fr != null) {
+                    fr.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return c;
+    }
+    static int filas;
+    
+    public static void escribirFichero(PrintWriter pw, String linea) throws Exception {
+        File arc = new File("bodega.txt");
+        filas = consultarFichero1();
+        String opcion;
+        int z = 0;
+        opcion = linea;
+        pw.print(opcion);
+    }
+
+    static int cantidad;
+    static String pedido;
+
+    void getstrpedido(int mesa1) {
+        int j = 0;
+        String pe = "";
+        Pedido p = new Pedido();
+        for (int i = 0; i < Menu.Pedidos.size(); i++) {
+            if (((Pedido) Menu.Pedidos.geto(i)).mesa == mesa1) {
+                pe = ((Pedido) Menu.Pedidos.geto(i)).pedido;
+                p = ((Pedido) Menu.Pedidos.geto(i));
+            }
+        }
+        for (int i = 0; i < pe.length(); i++) {
+            try {
+                int f = i + 1;
+                if (Integer.parseInt(pe.substring(i, f)) >= 1) {
+                    int f2 = i - 1;
+                    pedido = pe.substring(j, f2);
+                    cantidad = Integer.parseInt(pe.substring(i, f));
+                    j = f + 1;
+                }
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -148,8 +280,19 @@ int x2, y2, m;
     }//GEN-LAST:event_TablaCocinaMouseReleased
 
     private void bt1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt1MouseReleased
-        ((Mesas) MeserosTabla.mesa.geto(m)).estado = "listo";
-        bt1.setEnabled(false);
+        if (((Mesas) MeserosTabla.mesa.geto(m)).estado.equals("pro")) {
+            ((Mesas) MeserosTabla.mesa.geto(m)).estado = "listo";
+            bt1.setEnabled(false);
+            String m1 = TablaCocina.getValueAt(x2, 0).toString();
+            int sw = 0;
+            for (int i = 0; i < Menu.Pedidos.size(); i++) {
+                if (((Pedido) Menu.Pedidos.geto(i)).pedido.equals(m1)) {
+                    getstrpedido(m + 1);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Error, el pedido aun no se ha reclamado!");
+        }
     }//GEN-LAST:event_bt1MouseReleased
 
     /**

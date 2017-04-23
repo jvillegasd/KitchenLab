@@ -63,6 +63,9 @@
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="TablacuentaMouseReleased"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -180,9 +183,6 @@
     <Component class="javax.swing.JPasswordField" name="pf1">
     </Component>
     <Component class="javax.swing.JTextField" name="tf1">
-      <Events>
-        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tf1KeyTyped"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bt1">
       <Properties>

@@ -15,7 +15,7 @@ public class Mesas {
     String estado;
     String mesero="";
     List platos=new List();
-    int total=0;
+    double total=0;
     
     public Mesas(int num)
     {

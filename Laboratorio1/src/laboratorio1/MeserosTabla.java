@@ -6,9 +6,6 @@
 package laboratorio1;
 
 import javax.swing.JOptionPane;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -244,7 +241,7 @@ public class MeserosTabla extends javax.swing.JFrame {
             if (y == 2 && ((Mesas) mesa.geto(x)).mesero.equals(Login.ActualUser)) {
                 Menu menu = new Menu();
                 menu.setVisible(true);
-                if (((Mesas) mesa.geto(x)).estado.equals("pro") || ((Mesas) mesa.geto(x)).estado.equals("listo")) {
+                if (((Mesas) mesa.geto(x)).estado.equals("pro") || ((Mesas) mesa.geto(x)).estado.equals("listo") || ((Mesas) mesa.geto(x)).estado.equals("reclamado")) {
                     menu.actualizar2();
                 }
                 click = true;

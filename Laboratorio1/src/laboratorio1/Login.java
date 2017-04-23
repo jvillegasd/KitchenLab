@@ -6,10 +6,6 @@
 package laboratorio1;
 
 import javax.swing.JOptionPane;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import static laboratorio1.Chef.ChefTabla;
 
 /**
  *
@@ -23,6 +19,7 @@ public class Login extends javax.swing.JFrame {
     static List Users = new List();
     static List Passwords = new List();
     static String ActualUser;
+    String userclick,passclick;
 
     public Login() {
         initComponents();
@@ -91,6 +88,11 @@ public class Login extends javax.swing.JFrame {
             }
         });
         Tablacuenta.getTableHeader().setReorderingAllowed(false);
+        Tablacuenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                TablacuentaMouseReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(Tablacuenta);
         if (Tablacuenta.getColumnModel().getColumnCount() > 0) {
             Tablacuenta.getColumnModel().getColumn(0).setResizable(false);
@@ -130,12 +132,6 @@ public class Login extends javax.swing.JFrame {
         lb1.setText("Usuario:");
 
         lb2.setText("Contraseña:");
-
-        tf1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tf1KeyTyped(evt);
-            }
-        });
 
         bt1.setText("Iniciar Sesion");
         bt1.addActionListener(new java.awt.event.ActionListener() {
@@ -217,10 +213,6 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mi1ActionPerformed
 
-    private void tf1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf1KeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tf1KeyTyped
-
     boolean verificar() {
         if (ActualUser.equals("Waiter1") || ActualUser.equals("Waiter2") || ActualUser.equals("Waiter3") || ActualUser.equals("Waiter4")) {
             return true;
@@ -257,6 +249,7 @@ public class Login extends javax.swing.JFrame {
         String user = tf1.getText();
         String password = pf1.getText();
         int sw = 0, z = 0;
+        String hola="hola";
         ActualUser = "";
         if (Users.contains(user)) {
             while (z < Users.size() && sw == 0) {
@@ -310,6 +303,13 @@ public class Login extends javax.swing.JFrame {
     private void bt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt2ActionPerformed
         jd1.dispose();
     }//GEN-LAST:event_bt2ActionPerformed
+
+    private void TablacuentaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablacuentaMouseReleased
+        userclick=((String)Tablacuenta.getValueAt(Tablacuenta.rowAtPoint(evt.getPoint()),0));
+        passclick=((String)Tablacuenta.getValueAt(Tablacuenta.rowAtPoint(evt.getPoint()),1));
+        tf1.setText(userclick);
+        pf1.setText(passclick);
+    }//GEN-LAST:event_TablacuentaMouseReleased
 
     /**
      * @param args the command line arguments

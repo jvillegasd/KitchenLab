@@ -8,14 +8,8 @@ package laboratorio1;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -30,11 +24,20 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
-    int sw = 0, x1, y1, s, so = 0, preciototal = 0;
+    int sw = 0, x1, y1, s;
+    double preciototal=0;
     boolean clickmenu = false;
+    static int mesa1;
+    static List Pedidos = new List();
+    List platos = new List();
+    static List MesasMT = MeserosTabla.mesa;
+    String pedidos1 = null;
+    static int numpe = -1;
 
     public Menu() {
+        this.setResizable(false);
         initComponents();
+        mesa1 = MeserosTabla.x + 1;
         this.setLocationRelativeTo(null);
         lb1.setVisible(false);
         bt1.setVisible(false);
@@ -47,8 +50,7 @@ public class Menu extends javax.swing.JFrame {
         bt6.setEnabled(false);
         bt6.setVisible(false);
         lb3.setText("Menu");
-        int mesa1 = MeserosTabla.x;
-        lbMesa.setText("Mesa " + (mesa1 + 1));
+        lbMesa.setText("Mesa " + mesa1);
         int cantpl = consultarFichero();
         generarTabla(TablaMenu, cantpl);
         TablaMenu.setDefaultEditor(Object.class, null);
@@ -109,6 +111,14 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        FacturaDialog = new javax.swing.JDialog();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        FacturaTable = new javax.swing.JTable();
+        FacturaLB = new javax.swing.JLabel();
+        TotalLB = new javax.swing.JLabel();
+        CostoLB = new javax.swing.JLabel();
+        IVALB = new javax.swing.JLabel();
+        IVACLB = new javax.swing.JLabel();
         lb2 = new javax.swing.JLabel();
         bt1 = new javax.swing.JButton();
         bt2 = new javax.swing.JButton();
@@ -123,6 +133,85 @@ public class Menu extends javax.swing.JFrame {
         bt5 = new javax.swing.JButton();
         tf1 = new javax.swing.JTextField();
         bt6 = new javax.swing.JButton();
+
+        FacturaDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        FacturaDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                FacturaDialogWindowClosed(evt);
+            }
+        });
+
+        FacturaTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null}
+            },
+            new String [] {
+                "Plato", "Cantidad", "Precio.Unidad"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(FacturaTable);
+        if (FacturaTable.getColumnModel().getColumnCount() > 0) {
+            FacturaTable.getColumnModel().getColumn(0).setResizable(false);
+            FacturaTable.getColumnModel().getColumn(1).setResizable(false);
+            FacturaTable.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        FacturaLB.setText("Factura");
+
+        TotalLB.setText("Costo Total:");
+
+        IVALB.setText("IVA:");
+
+        javax.swing.GroupLayout FacturaDialogLayout = new javax.swing.GroupLayout(FacturaDialog.getContentPane());
+        FacturaDialog.getContentPane().setLayout(FacturaDialogLayout);
+        FacturaDialogLayout.setHorizontalGroup(
+            FacturaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FacturaDialogLayout.createSequentialGroup()
+                .addGroup(FacturaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(FacturaDialogLayout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(FacturaDialogLayout.createSequentialGroup()
+                        .addGap(171, 171, 171)
+                        .addComponent(FacturaLB))
+                    .addGroup(FacturaDialogLayout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addGroup(FacturaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(FacturaDialogLayout.createSequentialGroup()
+                                .addComponent(TotalLB)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(CostoLB, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(FacturaDialogLayout.createSequentialGroup()
+                                .addComponent(IVALB)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(IVACLB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap(73, Short.MAX_VALUE))
+        );
+        FacturaDialogLayout.setVerticalGroup(
+            FacturaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FacturaDialogLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(FacturaLB)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(FacturaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TotalLB)
+                    .addComponent(CostoLB, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(FacturaDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(IVALB)
+                    .addComponent(IVACLB, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -205,37 +294,40 @@ public class Menu extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(bt6)
-                        .addGap(18, 18, 18)
-                        .addComponent(bt2)))
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGap(57, 57, 57)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(bt6)
+                                .addGap(18, 18, 18)
+                                .addComponent(bt2)))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tf1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(bt3)
+                            .addComponent(bt5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tf1))
-                    .addComponent(bt3)
-                    .addComponent(bt5)))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lb1)
+                                .addGap(18, 18, 18)
+                                .addComponent(lb4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lb2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bt1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lb1)
-                        .addGap(18, 18, 18)
-                        .addComponent(lb4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lb2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bt1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(151, 151, 151)
-                .addComponent(lb3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lbMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(151, 151, 151)
+                        .addComponent(lb3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,13 +365,7 @@ public class Menu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    int mesa = MeserosTabla.x;
-    static List Pedidos = new List();
-    static List platos = new List();
-    String pedidos1 = null;
-    static int numpe = -1;
-
-    public static void mostrarFichero() {
+ public static void mostrarFichero() {
         FileReader fr = null;
         try {
             File fichero = new File("platos.txt");
@@ -310,7 +396,7 @@ public class Menu extends javax.swing.JFrame {
         while (linea != null) {
             sw = 0;
             for (int i = 0; i < linea.length(); i++) {
-                System.out.println("ChatAt(i): " + linea.charAt(i));
+                // System.out.println("ChatAt(i): " + linea.charAt(i));
                 if (linea.charAt(i) == ',' && sw == 0) {
                     plato = linea.substring(0, i);
                     TablaMenu.setValueAt(plato, z, 0);
@@ -350,17 +436,19 @@ public class Menu extends javax.swing.JFrame {
         String pe = "";
         Pedido p = new Pedido();
         for (int i = 0; i < Pedidos.size(); i++) {
-            if (((Pedido) Pedidos.geto(i)).mesa == (MeserosTabla.x + 1)) {
+            if (((Pedido) Pedidos.geto(i)).mesa == mesa1) {
                 pe = ((Pedido) Pedidos.geto(i)).pedido;
                 p = ((Pedido) Pedidos.geto(i));
             }
         }
         for (int i = 0; i < pe.length(); i++) {
             try {
-                if (Integer.parseInt(pe.substring(i, i + 1)) >= 1) {
-                    Plato plato = new Plato(pe.substring(j, i - 2), Integer.parseInt(pe.substring(i, i + 1)), p.numpedido);
+                int f = i + 1;
+                if (Integer.parseInt(pe.substring(i, f)) >= 1) {
+                    int f2 = i - 1;
+                    Plato plato = new Plato(pe.substring(j, f2), Integer.parseInt(pe.substring(i, f)), p.numpedido);
                     platos.add(plato);
-                    j = i + 2;
+                    j = f + 1;
                 }
             } catch (Exception e) {
 
@@ -371,7 +459,7 @@ public class Menu extends javax.swing.JFrame {
     static int obindi() {
         int z = 0;
         for (int i = 0; i < Pedidos.size(); i++) {
-            if (((Pedido) Pedidos.geto(i)).mesa == (MeserosTabla.x + 1)) {
+            if (((Pedido) Pedidos.geto(i)).mesa == mesa1) {//no pude usar variable mesas1 debio a que no es static
                 z = ((Pedido) Pedidos.geto(i)).numpedido;
             }
         }
@@ -401,13 +489,20 @@ public class Menu extends javax.swing.JFrame {
                 bt1.setText("Reclamar");
                 bt1.setVisible(true);
                 bt1.setEnabled(true);
-                ((Pedido) Pedidos.geto(obindi())).empezar = false;
+                bt6.setEnabled(false);
+                ((Pedido) Pedidos.geto(obindi())).Stop();
+            } else if (((Mesas) MeserosTabla.mesa.geto(MeserosTabla.x)).estado.equals("reclamado")) {
+               bt1.setText("Reclamado");
+                bt1.setVisible(true);
+                bt1.setEnabled(false);
+                bt3.setEnabled(true);
+                bt6.setEnabled(false);
             }
         }
     }
 
     void actualizar2pausa() {
-        if (so == 1) {
+        if (((Mesas) MesasMT.geto(mesa1 - 1)).estado.equals("Modif")) {
             bt1.setText("En Pausa");
             TablaMenu.setEnabled(true);
             bt2.setEnabled(true);
@@ -418,20 +513,56 @@ public class Menu extends javax.swing.JFrame {
         }
     }
 
-    private void generargasto() {
+    void generarTablafactura() {
+        getstrpedido();
+        DefaultTableModel modelo = new DefaultTableModel((platos.size()), 3);
+        System.out.println(platos.size());
+        System.out.println("hola");
+        FacturaTable.setModel(modelo);
+        JTableHeader th = FacturaTable.getTableHeader();
+        TableColumnModel tcm = th.getColumnModel();
+        TableColumn tc = tcm.getColumn(0);
+        tc.setHeaderValue("Plato");
+        tc.setResizable(false);
+        TableColumn tc1 = tcm.getColumn(1);
+        tc1.setHeaderValue("Cantidad");
+        tc1.setResizable(false);
+        TableColumn tc2 = tcm.getColumn(2);
+        tc2.setHeaderValue("Precio.Unidad");
+        tc2.setResizable(false);
+        FacturaTable.setDefaultEditor(Object.class, null);
+        th.repaint();
+        double iva;
         for (int i = 0; i < platos.size(); i++) {
-            for (int j = 0; j < consultarFichero(); j++) {
-                if (((Plato) platos.geto(i)).nombre.equals(TablaMenu.getValueAt(j, 0))) {
-                    preciototal = preciototal + ((int) TablaMenu.getValueAt(j, 2));
-                    break;
-                }
+            String nomplato = ((Plato) platos.geto(i)).nombre;
+            int cantplato = ((Plato) platos.geto(i)).cantidad;
+            int precio = buscarprecioplato(nomplato);
+            FacturaTable.setValueAt(nomplato, i, 0);
+            FacturaTable.setValueAt(cantplato, i, 1);
+            FacturaTable.setValueAt(precio, i, 2);
+            preciototal = preciototal + (cantplato * precio);
+        }
+        iva = preciototal * 0.19;
+        CostoLB.setText(preciototal + " COP$");
+        IVACLB.setText(iva + " COP$");
+        preciototal=preciototal+iva;
+    }
+
+    int buscarprecioplato(String plato) {
+        int z = 0;
+        for (int i = 0; i < TablaMenu.getRowCount(); i++) {
+            if (TablaMenu.getValueAt(i, 0).toString().equals(plato)) {
+                String d = ((String) TablaMenu.getValueAt(i, 2));
+                d=d.replaceAll("\\s*", "");
+                z = Integer.parseInt(d);
             }
         }
+        return z;
     }
 
     private void bt3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt3MouseClicked
         if (bt3.isEnabled()) {
-            generargasto();
+            generarTablafactura();
             int z = 0, sw = 0;
             List aux2 = MeserosTabla.mesaus;
             List aux3 = MeserosTabla.mesa;
@@ -441,19 +572,22 @@ public class Menu extends javax.swing.JFrame {
                 if ((MeserosTabla.x + 1) == ((Mesas) aux2.geto(z)).numero) {
                     aux2.remove(z);
                     ((Mesas) aux3.geto(MeserosTabla.x)).mesero = "";
+                    ((Mesas) aux3.geto(MeserosTabla.x)).total = ((Mesas) aux3.geto(MeserosTabla.x)).total + preciototal;
                     MeserosTabla.mesaus = aux2;
                     MeserosTabla.mesa = aux3;
                     sw = 1;
                 }
                 z++;
             }
-            ((Pedido) Pedidos.geto(s)).Stop();
             Pedidos.remove(obindi());
             MeserosTabla.actualizar();
             MeserosTabla.lb6.setText("" + MeserosTabla.ac);
             MeserosTabla.click = false;
             numpe--;
-            this.dispose();
+            FacturaDialog.setResizable(false);
+            FacturaDialog.setLocation(543, 230);
+            FacturaDialog.setSize(400, 350);
+            FacturaDialog.setVisible(true);
         }
     }//GEN-LAST:event_bt3MouseClicked
 
@@ -508,7 +642,10 @@ public class Menu extends javax.swing.JFrame {
         if (bt1.isEnabled()) {
             JOptionPane.showMessageDialog(null, "Pedido reclamado, hasta el momento la factura esta lista!");
             bt3.setEnabled(true);
+
         }
+        ((Mesas) MesasMT.geto(mesa1 - 1)).estado = "reclamado";
+        bt1.setEnabled(false);
     }//GEN-LAST:event_bt1MouseClicked
 
     private void bt5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt5MouseClicked
@@ -543,14 +680,12 @@ public class Menu extends javax.swing.JFrame {
 
     private void tf1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf1KeyTyped
         char key = evt.getKeyChar();
-        if (!Character.isDigit(key) && key != evt.VK_BACK_SPACE) {
+        if (!Character.isDigit(key) && (key != evt.VK_BACK_SPACE || key != evt.VK_ENTER)) {
             evt.consume();
         }
-        if (key == evt.VK_BACK_SPACE && tf1.getText().isEmpty()) {
+        if ((key == evt.VK_BACK_SPACE && tf1.getText().isEmpty()) || (verificarcero(tf1.getText()) == 0 && platos.isEmpty())) {
             bt5.setEnabled(false);
-        } else if (verificarcero(tf1.getText()) == 0 && platos.isEmpty()) {
-            bt5.setEnabled(false);
-        } else if (clickmenu && !tf1.getText().isEmpty() && verificarcero(tf1.getText()) != 0) {
+        } else if (key == evt.VK_ENTER && clickmenu && verificarcero(tf1.getText()) >= 0) {
             bt5.setEnabled(true);
         }
     }//GEN-LAST:event_tf1KeyTyped
@@ -559,9 +694,10 @@ public class Menu extends javax.swing.JFrame {
         getstrpedido();
         if (bt6.isEnabled() && !platos.isEmpty()) {
             s = ((Plato) platos.geto(0)).numpe;
+            System.out.println(s);
             if (((Pedido) Pedidos.geto(s)).minutos < 5) {
                 ((Pedido) Pedidos.geto(s)).Suspend();
-                so = 1;
+                ((Mesas) MesasMT.geto(mesa1 - 1)).estado = "Modif";
                 actualizar2pausa();
             } else {
                 JOptionPane.showMessageDialog(null, "Tiempo de cambio terminado");
@@ -572,16 +708,14 @@ public class Menu extends javax.swing.JFrame {
     private void bt2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt2MouseReleased
         if (bt2.isEnabled()) {
             setstrpedido();
-            if (so == 0) {
+            if (!((Mesas) MesasMT.geto(mesa1 - 1)).estado.equals("Modif")) {
                 numpe++;
-                Pedido p = new Pedido(pedidos1, (mesa + 1), true, numpe);
+                Pedido p = new Pedido(pedidos1, mesa1, true, numpe);
                 Pedidos.add(p);
             } else {
-                System.out.println(pedidos1);
                 ((Pedido) Pedidos.geto(s)).pedido = pedidos1;
                 ((Pedido) Pedidos.geto(s)).Resume();
             }
-            so = 0;
             pedidos1 = null;
             bt5.setEnabled(false);
             tf1.setEditable(false);
@@ -601,14 +735,19 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_bt2MouseReleased
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if (so == 1) {
+        if (((Mesas) MesasMT.geto(mesa1 - 1)).estado.equals("Modif")) {
             JOptionPane.showMessageDialog(null, "No puede cerrar hasta que se termine la modificacion!");
         } else {
             MeserosTabla.click = false;
             platos.removeAll();
             this.dispose();
+            FacturaDialog.dispose();
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void FacturaDialogWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_FacturaDialogWindowClosed
+        this.dispose();
+    }//GEN-LAST:event_FacturaDialogWindowClosed
 
     /**
      * @param args the command line arguments
@@ -646,7 +785,14 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel CostoLB;
+    private javax.swing.JDialog FacturaDialog;
+    private javax.swing.JLabel FacturaLB;
+    private javax.swing.JTable FacturaTable;
+    private javax.swing.JLabel IVACLB;
+    private javax.swing.JLabel IVALB;
     public static javax.swing.JTable TablaMenu;
+    private javax.swing.JLabel TotalLB;
     public static javax.swing.JButton bt1;
     public static javax.swing.JButton bt2;
     public static javax.swing.JButton bt3;
@@ -654,6 +800,7 @@ public class Menu extends javax.swing.JFrame {
     public static javax.swing.JButton bt6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JLabel lb1;
     public static javax.swing.JLabel lb2;
     public static javax.swing.JLabel lb3;

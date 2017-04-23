@@ -338,10 +338,9 @@ public class List {
     }
 
     public void removeAll() {
-        if (this.ptr != null) {
-            for (int i = 0; i < this.size(); i++) {
-                this.remove(i);
-            }
+        for (int i = 0; i < this.size(); i++) {
+            this.remove(i);
         }
+        this.ptr=null;
     }
 }
